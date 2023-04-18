@@ -21,7 +21,9 @@ def read_sku_map():
 
     for line in lines:
         tokens = line.split(' ')
-        map[tokens[0]] = tokens[1]
+
+        if len(tokens) > 1:
+            map[tokens[0]] = tokens[1]
 
     return map
 
@@ -58,6 +60,7 @@ def get_xml(url):
         return xmltodict.parse(res.content)
     except:
         print('Failed to download XML file')
+        return None
 
 
 def get_laptop_brand(item):
@@ -144,6 +147,9 @@ def import_laptop(sku_map, price_map, url, api_token, item):
         if price is None:
             price = 0
 
+        price = float(price)
+        price = price + (price * 0.17)
+        
         available = False
         listing_type = 'sell'
         state = 'new'
@@ -233,6 +239,7 @@ def main():
         sku_map = read_sku_map()
     except:
         print('Failed to load SKU map\n')
+        return
 
     url = os.getenv('OLX_API_URL')
     xml_products_url = os.getenv('TECHNOBIT_XML_PRODUCTS')
@@ -242,6 +249,9 @@ def main():
 
     products = get_xml(xml_products_url)
     prices = get_xml(xml_prices_url)
+
+    if products is None or prices is None:
+        return
 
     price_map = {}
 
