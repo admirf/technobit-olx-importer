@@ -217,7 +217,7 @@ def import_laptop(sku_map, price_map, url, api_token, item):
 
             elif mode == 'update':
                 id = sku_map[code]
-                requests.put(f'{url}/listings/{id}', data=payload)
+                requests.put(f'{url}/listings/{id}', json=payload, headers=headers)
 
                 return 1
         except Exception as e:
