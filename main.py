@@ -148,7 +148,7 @@ def import_laptop(sku_map, price_map, url, api_token, item):
             price = 0
 
         price = float(price)
-        price = price + (price * 0.17)
+        price = round(price + (price * 0.17))
         
         available = False
         listing_type = 'sell'
@@ -191,6 +191,8 @@ def import_laptop(sku_map, price_map, url, api_token, item):
             'brand_id': brand_id,
             'attributes': [{'id': 265, 'value': display}, {'id': 261, 'value': os}, {'id': 262, 'value': cpu}, {'id': 264, 'value': ram}, {'id': 3872, 'value': card}]
         }
+
+        print(payload)
 
         if mode == 'insert':
             try:
